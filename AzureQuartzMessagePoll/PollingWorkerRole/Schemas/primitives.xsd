@@ -1,0 +1,94 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="primitives" targetNamespace="http://independenceenergyco.com/schemas" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://independenceenergyco.com/schemas">
+	<xs:simpleType name="dayName">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Sunday" />
+			<xs:enumeration value="Monday" />
+			<xs:enumeration value="Tuesday" />
+			<xs:enumeration value="Wednesday" />
+			<xs:enumeration value="Thursday" />
+			<xs:enumeration value="Friday" />
+			<xs:enumeration value="Saturday" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="hours">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="23" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="minutes">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="0" />
+			<xs:maxInclusive value="59" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="daysOfMonth">
+		<xs:restriction base="xs:int">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="31" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="month">
+		<xs:union memberTypes="monthNames monthNumbers"/>
+	</xs:simpleType>
+	<xs:simpleType name="monthNames">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="January" />
+			<xs:enumeration value="February" />
+			<xs:enumeration value="March" />
+			<xs:enumeration value="April" />
+			<xs:enumeration value="May" />
+			<xs:enumeration value="June" />
+			<xs:enumeration value="July" />
+			<xs:enumeration value="August" />
+			<xs:enumeration value="September" />
+			<xs:enumeration value="October" />
+			<xs:enumeration value="November" />
+			<xs:enumeration value="December" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="monthNumbers">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="12" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="weeksOfMonth">
+		<xs:union memberTypes="weeksOfMonthOrdinals weeksOfMonthNumbers"/>
+	</xs:simpleType>
+	<xs:simpleType name="weeksOfMonthNumbers">
+		<xs:restriction base="xs:integer">
+			<xs:minInclusive value="1" />
+			<xs:maxInclusive value="5" />
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="weeksOfMonthOrdinals">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="First" />
+			<xs:enumeration value="Second" />
+			<xs:enumeration value="Third" />
+			<xs:enumeration value="Fourth" />
+			<xs:enumeration value="Fifth" />
+			<xs:enumeration value="Last"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="holidayName">
+		<xs:union memberTypes="xs:string standardHoliday"/>
+	</xs:simpleType>
+	<xs:simpleType name="standardHoliday">
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="New Year's Day"/>
+			<xs:enumeration value="Martin Luther King Day"/>
+			<xs:enumeration value="President's Day"/>
+			<xs:enumeration value="Memorial Day"/>
+			<xs:enumeration value="Independence Day"/>
+			<xs:enumeration value="Labor Day"/>
+			<xs:enumeration value="Thanksgiving"/>
+			<xs:enumeration value="Black Friday"/>
+			<xs:enumeration value="Christmas Eve"/>
+			<xs:enumeration value="Christmas Day"/>
+			<xs:enumeration value="New Year's Eve"/>	
+		</xs:restriction>
+	</xs:simpleType>
+</xs:schema>

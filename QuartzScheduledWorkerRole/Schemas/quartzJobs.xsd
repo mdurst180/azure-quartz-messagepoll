@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="quartzJobConfiguration" targetNamespace="http://independenceenergyco.com/schemas" xmlns="http://independenceenergyco.com/schemas" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+	<xs:include schemaLocation="primitives.xsd" />
+	<xs:element name="quartzJobs" type="quartzJobs" />
+	<xs:complexType name="job" abstract="true">
+    <xs:attribute name="jobType" type="xs:string" use="required"/>
+    <xs:attribute name="scheduler" type="xs:string" use="optional" default="default" />
+  </xs:complexType>
+	<xs:complexType name="secondlyJob">
+		<xs:attributeGroup ref="secondlyJobAttributeGroup" />
+	</xs:complexType>
+	<xs:attributeGroup name="secondlyJobAttributeGroup">
+		<xs:attribute name="jobType" type="xs:string" use="required" />
+		<xs:attribute name="triggerInterval" use="required" type="secondsInOneDay">
+			<xs:annotation>
+				<xs:documentation>
+					<![CDATA[This is a positive integer less than 86400, that is, the number of seconds in a day.]]>
+				</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+    <xs:attribute name="triggerPriority" use="optional" type="triggerPriority" default="5">
+      <xs:annotation>
+        <xs:documentation>
+          <![CDATA[Specifies priority of the quartz trigger. 1-10. 10 being highest priority.]]>
+        </xs:documentation>
+      </xs:annotation>
+    </xs:attribute>
+	</xs:attributeGroup>
+	<xs:simpleType name="secondsInOneDay">
+		<xs:restriction base="xs:positiveInteger">
+			<xs:maxExclusive value="86400">
+				<xs:annotation>
+					<xs:documentation>
+						<![CDATA[Value cannot exceed the number of seconds in a day]]>
+					</xs:documentation>
+				</xs:annotation>
+			</xs:maxExclusive>
+		</xs:restriction>
+	</xs:simpleType>
+  <xs:simpleType name="triggerPriority">
+    <xs:restriction base="xs:positiveInteger">
+      <xs:minExclusive value="1"/>
+      <xs:maxExclusive value="10"/>
+    </xs:restriction>
+  </xs:simpleType>
+	<xs:complexType name="dailyJob">
+		<xs:complexContent>
+			<xs:extension base="job">
+				<xs:attributeGroup ref="dailyJobAttributeGroup" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:attributeGroup name="dailyJobAttributeGroup">
+		<xs:attribute name="hour" type="hours" use="required" />
+		<xs:attribute name="minute" type="minutes" use="required" />
+		<xs:attributeGroup ref="postponementsAttributeGroup"/>
+	</xs:attributeGroup>
+	<xs:complexType name="weeklyJob">
+		<xs:complexContent>
+			<xs:extension base="job">
+				<xs:attributeGroup ref="weeklyJobAttributeGroup" />
+			</xs:extension>
+		</xs:complexContent>
+	</xs:complexType>
+	<xs:attributeGroup name="weeklyJobAttributeGroup">
+		<xs:attribute name="dayOfWeek" type="dayName" use="required" />
+		<xs:attribute name="hour" type="hours" use="required" />
+		<xs:attribute name="minute" type="minutes" use="required" />
+	</xs:attributeGroup>
+	<xs:complexType name="secondlyJobs">
+		<xs:sequence>
+			<xs:element name="secondlyJob" minOccurs="0" maxOccurs="unbounded" type="secondlyJob" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="dailyJobs">
+		<xs:sequence>
+			<xs:element name="dailyJob" minOccurs="0" maxOccurs="unbounded" type="dailyJob" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="weeklyJobs">
+		<xs:sequence>
+			<xs:element name="weeklyJob" minOccurs="0" maxOccurs="unbounded" type="weeklyJob" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="quartzJobs">
+		<xs:sequence>
+			<xs:element name="secondlyJobs" minOccurs="0" maxOccurs="1" type="secondlyJobs" />
+			<xs:element name="dailyJobs" minOccurs="0" maxOccurs="1" type="dailyJobs" />
+			<xs:element name="weeklyJobs" minOccurs="0" maxOccurs="1" type="weeklyJobs" />
+		</xs:sequence>
+  </xs:complexType>
+	<xs:attributeGroup name="postponementsAttributeGroup">
+		<xs:annotation>
+			<xs:documentation>
+				<![CDATA[A semi-colon (;) delimited list of holidays.]]>
+			</xs:documentation>
+		</xs:annotation>
+		<xs:attribute name="postponement" type="xs:string" use="optional"/>
+	</xs:attributeGroup>
+</xs:schema>
